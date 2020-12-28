@@ -31,23 +31,27 @@ Widget _defaultOperationTipsBuilder(
 
 class OperationTips extends StatefulWidget {
   final Widget child;
-  final Widget tipsBubble;
   final OperationTipsController operationTipsController;
   final OperationTipsBuilder builder;
   final TipsDirection direction;
+  ///tips bubble onTap
   final VoidCallback onTap;
   final String title;
+  final TipsBubbleDelegate delegate;
+  ///tips bubble background color
+  final Color color;
 
   OperationTips({
     Key key,
     @required this.child,
-    this.tipsBubble,
     this.operationTipsController,
     this.builder = _defaultOperationTipsBuilder,
     this.direction = TipsDirection.vertical,
     this.title,
     this.onTap,
-  })  : assert(operationTipsController != null || tipsBubble != null || title != null),
+    this.delegate,
+    this.color = Colors.black,
+  })  : assert(operationTipsController != null || title != null || delegate != null),
         super(key: key);
 
   @override
@@ -60,29 +64,25 @@ class _OperationTipsState extends State<OperationTips>
   Animation<double> scale;
   Animation<double> opacity;
   Size size = Size.zero;
-  Widget tipsBubble;
 
   OperationTipsBuilder get builder => widget.builder;
 
   @override
   void initState() {
     super.initState();
-    if (widget.tipsBubble !=null || widget.title !=null) {
-      tipsBubble = widget.tipsBubble ?? Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          widget.title,
-          style: TextStyle(color: Colors.white),
-        ),
-      );
-    }
-    print('tipsBubble: $tipsBubble');
     operationTipsController = widget.operationTipsController ??
         OperationTipsController(
           vsync: this,
           direction: widget.direction,
-          delegate: DefaultTipsBubbleDelegate(
-            child: tipsBubble,
+          delegate: widget.delegate ?? DefaultTipsBubbleDelegate(
+            color: widget.color,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                widget.title,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
             onTap: widget.onTap,
           ),
         );
@@ -93,7 +93,6 @@ class _OperationTipsState extends State<OperationTips>
   @override
   Widget build(BuildContext context) {
     assert(child != null);
-    operationTipsController._context = context;
     if (operationTipsController._context == null) {
       operationTipsController._context = context;
     }

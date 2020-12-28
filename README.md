@@ -6,7 +6,7 @@ Flutter operation tips.Flutter 长按弹出,操作提示.
 
 ```
 dependencies:
-  operation_tips: ^0.0.1
+  operation_tips: ^0.0.2
 ```
 ## Example
 simple.
@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         vsync: this,
         direction: TipsDirection.vertical,
         delegate: DefaultTipsBubbleDelegate(
+          color: Colors.blue,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -48,6 +49,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
           onTap: () => onTap('Top'),
         ),
       );
+  }
+
+  build() {
+    ...
+    OperationTips(
+          operationTipsController: controller,
+          onTap: () {
+            print("onTap");
+          },
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.red,
+            alignment: Alignment.center,
+            child: Text(text),
+          ),
+        )
+    ...
   }
 }
 ```

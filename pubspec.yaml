@@ -1,6 +1,6 @@
 name: operation_tips
 description: Flutter operation tips.Flutter 长按弹出,操作提示.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/wuweijian1997/operation_tips
 
 environment:

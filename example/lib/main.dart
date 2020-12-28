@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       vsync: this,
       direction: TipsDirection.vertical,
       delegate: DefaultTipsBubbleDelegate(
+        color: Colors.blue,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
@@ -52,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       vsync: this,
       direction: TipsDirection.vertical,
       delegate: DefaultTipsBubbleDelegate(
+        color: Colors.green,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
@@ -66,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       vsync: this,
       direction: TipsDirection.horizontal,
       delegate: DefaultTipsBubbleDelegate(
+        color: Colors.pink,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
@@ -80,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       vsync: this,
       direction: TipsDirection.horizontal,
       delegate: DefaultTipsBubbleDelegate(
+        color: Colors.yellow,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
@@ -102,13 +106,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       onTap: () {
         onTap(text);
       },
-      tipsBubble: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          "Hello world",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
       child: Container(
         width: 100,
         height: 100,

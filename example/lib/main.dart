@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     );
     bottomController = OperationTipsController(
       vsync: this,
-      direction: TipsDirection.vertical,
+      direction: TipsDirection.top,
       delegate: DefaultTipsBubbleDelegate(
         color: Colors.green,
         child: Padding(
@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
               ),
             ),
             Positioned(
-              top: 50,
+              top: 30,
               left: 50,
               child: buildOperationTips(bottomController, 'Bottom'),
             ),

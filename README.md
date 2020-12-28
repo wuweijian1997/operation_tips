@@ -6,7 +6,7 @@ Flutter operation tips.Flutter 长按弹出,操作提示.
 
 ```
 dependencies:
-  operation_tips: ^0.0.2
+  operation_tips: ^0.0.3
 ```
 ## Example
 simple.

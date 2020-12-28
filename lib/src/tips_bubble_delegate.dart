@@ -85,7 +85,7 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             setState(() {
               _tipsBubbleSize = notification.size;
-              calculatePosition(direction, size, offset);
+              calculateDirection(direction, size, offset);
             });
           });
           return true;
@@ -150,7 +150,8 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
     );
   }
 
-  calculatePosition(TipsDirection direction, Size size, Offset offset) {
+  calculateDirection(TipsDirection direction, Size size, Offset offset) {
+    _direction = direction;
     switch (direction) {
       case TipsDirection.vertical:
         if (_constraints.maxHeight - size.height - offset.dy > offset.dy) {
@@ -166,10 +167,32 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
           _direction = TipsDirection.left;
         }
         break;
-      default:
-        _direction = direction;
+      case TipsDirection.top:
+        if(_tipsBubbleSize != null && offset.dy < _tipsBubbleSize.height) {
+          _direction = TipsDirection.bottom;
+        }
+        break;
+      case TipsDirection.left:
+        if(_tipsBubbleSize != null && offset.dx < _tipsBubbleSize.width) {
+          _direction = TipsDirection.right;
+        }
+        break;
+      case TipsDirection.bottom:
+        if(_tipsBubbleSize != null && offset.dy + _tipsBubbleSize.height > _constraints.maxHeight) {
+          _direction = TipsDirection.top;
+        }
+        break;
+      case TipsDirection.right:
+        if(_tipsBubbleSize != null && offset.dx + _tipsBubbleSize.width > _constraints.maxWidth) {
+          _direction = TipsDirection.left;
+        }
+        break;
     }
-    switch (_direction) {
+    calculatePosition(_direction, size, offset);
+  }
+
+  calculatePosition(TipsDirection direction, Size size, Offset offset) {
+    switch (direction) {
       case TipsDirection.top:
         _left = offset.dx + size.width / 2 - _tipsBubbleSize.width / 2;
         _top = offset.dy - _tipsBubbleSize.height - distance;
@@ -189,6 +212,8 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
       default:
     }
   }
+
+
 }
 
 class TipsBubbleClipper extends CustomClipper<Path> {

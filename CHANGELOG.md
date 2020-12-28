@@ -4,3 +4,6 @@
 ## [0.0.2] - 2020/12/28 11:32
 
 * OperationTips add delegate attribute.
+## [0.0.3] - 2020/12/28 18:01
+
+* Update location display priority

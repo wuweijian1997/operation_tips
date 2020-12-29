@@ -46,7 +46,7 @@ class OperationTips extends StatefulWidget {
     @required this.child,
     this.operationTipsController,
     this.builder = _defaultOperationTipsBuilder,
-    this.direction = TipsDirection.vertical,
+    this.direction = TipsDirection.top,
     this.title,
     this.onTap,
     this.delegate,
@@ -121,7 +121,7 @@ class OperationTipsController {
     @required TickerProvider vsync,
     Duration duration = const Duration(milliseconds: 200),
     @required this.delegate,
-    this.direction = TipsDirection.vertical,
+    this.direction = TipsDirection.top,
   }) {
     if (vsync != null) {
       _animationController =

@@ -7,3 +7,7 @@
 ## [0.0.3] - 2020/12/28 18:01
 
 * Update location display priority
+## [0.0.4] - 2020/12/29 14:09
+
+* Default direction top.
+

@@ -37,7 +37,7 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
     this.radius = 10,
     this.tail = 10,
     this.distance = 10,
-  }) : super(child:child, onTap: onTap);
+  }) : super(child: child, onTap: onTap);
 
   @override
   build(
@@ -60,7 +60,7 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
               children: [
                 StatefulBuilder(
                   builder: (_, StateSetter setState) {
-                    return buildBody(size, offset, direction,
+                    return buildBody(context, size, offset, direction,
                         operationTipsController, setState);
                   },
                 ),
@@ -73,6 +73,7 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
   }
 
   buildBody(
+    BuildContext context,
     Size size,
     Offset offset,
     TipsDirection direction,
@@ -85,7 +86,7 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             setState(() {
               _tipsBubbleSize = notification.size;
-              calculateDirection(direction, size, offset);
+              calculateDirection(context, direction, size, offset);
             });
           });
           return true;
@@ -150,7 +151,7 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
     );
   }
 
-  calculateDirection(TipsDirection direction, Size size, Offset offset) {
+  calculateDirection(BuildContext context, TipsDirection direction, Size size, Offset offset) {
     _direction = direction;
     switch (direction) {
       case TipsDirection.vertical:
@@ -168,22 +169,25 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
         }
         break;
       case TipsDirection.top:
-        if(_tipsBubbleSize != null && offset.dy < _tipsBubbleSize.height) {
+        final double statusBarHeight = MediaQuery.of(context).padding.top;
+        if (_tipsBubbleSize != null && offset.dy < _tipsBubbleSize.height + statusBarHeight + distance) {
           _direction = TipsDirection.bottom;
         }
         break;
       case TipsDirection.left:
-        if(_tipsBubbleSize != null && offset.dx < _tipsBubbleSize.width) {
+        if (_tipsBubbleSize != null && offset.dx < _tipsBubbleSize.width) {
           _direction = TipsDirection.right;
         }
         break;
       case TipsDirection.bottom:
-        if(_tipsBubbleSize != null && offset.dy + _tipsBubbleSize.height > _constraints.maxHeight) {
+        if (_tipsBubbleSize != null &&
+            offset.dy + _tipsBubbleSize.height > _constraints.maxHeight) {
           _direction = TipsDirection.top;
         }
         break;
       case TipsDirection.right:
-        if(_tipsBubbleSize != null && offset.dx + _tipsBubbleSize.width > _constraints.maxWidth) {
+        if (_tipsBubbleSize != null &&
+            offset.dx + _tipsBubbleSize.width > _constraints.maxWidth) {
           _direction = TipsDirection.left;
         }
         break;
@@ -212,8 +216,6 @@ class DefaultTipsBubbleDelegate extends TipsBubbleDelegate {
       default:
     }
   }
-
-
 }
 
 class TipsBubbleClipper extends CustomClipper<Path> {

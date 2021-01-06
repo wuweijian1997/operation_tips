@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:operation_tips/operation_tips.dart';
 
@@ -25,16 +27,13 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
-  OperationTipsController topController;
-  OperationTipsController bottomController;
-  OperationTipsController leftController;
-  OperationTipsController rightController;
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  OperationTipsController operationTipsController;
 
   @override
   void initState() {
     super.initState();
-    topController = OperationTipsController(
+    operationTipsController = OperationTipsController(
       vsync: this,
       direction: TipsDirection.top,
       delegate: DefaultTipsBubbleDelegate(
@@ -49,63 +48,25 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         onTap: () => onTap('Top'),
       ),
     );
-    bottomController = OperationTipsController(
-      vsync: this,
-      direction: TipsDirection.bottom,
-      delegate: DefaultTipsBubbleDelegate(
-        color: Colors.green,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Hello world",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        onTap: () => onTap('Bottom'),
-      ),
-    );
-    leftController = OperationTipsController(
-      vsync: this,
-      direction: TipsDirection.horizontal,
-      delegate: DefaultTipsBubbleDelegate(
-        color: Colors.pink,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Hello world",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        onTap: () => onTap('Left'),
-      ),
-    );
-    rightController = OperationTipsController(
-      vsync: this,
-      direction: TipsDirection.horizontal,
-      delegate: DefaultTipsBubbleDelegate(
-        color: Colors.yellow,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Hello world",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        onTap: () => onTap('Right'),
-      ),
-    );
   }
 
   onTap(String title) {
     print("$title was clicked!");
   }
 
-  buildOperationTips(OperationTipsController controller, String text) {
+  buildOperationTips(
+      {String text,
+      Color color,
+      TextStyle textStyle,
+      TipsDirection direction}) {
     return OperationTips(
-      operationTipsController: controller,
       onTap: () {
         onTap(text);
       },
+      color: color,
+      tips: text,
+      textStyle: textStyle,
+      direction: direction,
       child: Container(
         width: 100,
         height: 100,
@@ -123,11 +84,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         child: Stack(
           children: [
             Center(
-              child: OperationTips(
-                onTap: () {
-                  onTap('Center');
-                },
-                title: "Title",
+              child: ControllableOperationTips(
+                operationTipsController: operationTipsController,
                 child: Container(
                   width: 100,
                   height: 100,
@@ -140,22 +98,42 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
             Positioned(
               top: 70,
               left: 50,
-              child: buildOperationTips(topController, 'Top'),
+              child: buildOperationTips(
+                text: 'Top',
+                textStyle: TextStyle(color: Colors.blue),
+                direction: TipsDirection.top,
+                color: Colors.redAccent,
+              ),
             ),
             Positioned(
               top: 50,
               right: 50,
-              child: buildOperationTips(leftController, 'Left'),
+              child: buildOperationTips(
+                text: 'Left',
+                textStyle: TextStyle(color: Colors.red),
+                direction: TipsDirection.left,
+                color: Colors.blueAccent,
+              ),
             ),
             Positioned(
               bottom: 50,
               left: 50,
-              child: buildOperationTips(rightController, 'Right'),
+              child: buildOperationTips(
+                text: 'Right',
+                textStyle: TextStyle(color: Colors.white),
+                direction: TipsDirection.right,
+                color: Colors.black,
+              ),
             ),
             Positioned(
-              bottom: 20,
+              bottom: 100,
               right: 50,
-              child: buildOperationTips(bottomController, 'Bottom'),
+              child: buildOperationTips(
+                text: 'Bottom',
+                textStyle: TextStyle(color: Colors.yellow),
+                direction: TipsDirection.bottom,
+                color: Colors.grey,
+              ),
             ),
           ],
         ),
@@ -163,10 +141,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          topController.open();
-          bottomController.open();
-          leftController.open();
-          rightController.open();
+          operationTipsController.open();
         },
       ),
     );
